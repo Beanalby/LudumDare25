@@ -13,6 +13,7 @@ public class MuffinController : MonoBehaviour {
 
     private Rigidbody rb;
     private Camera cam;
+    private Transform swipeSphere;
 
     private bool doJump;
     private Vector3 velocity = Vector3.zero;
@@ -21,6 +22,7 @@ public class MuffinController : MonoBehaviour {
     {
         rb = GetComponent<Rigidbody>();
         cam = Camera.mainCamera;
+        swipeSphere = transform.FindChild("SwipeSphere");
 	}
 
     void Update()
@@ -30,6 +32,9 @@ public class MuffinController : MonoBehaviour {
             Debug.Log("Setting doJump");
             doJump = true;
         }
+
+        if (Input.GetButtonDown("Fire1"))
+            doSwipe();
     }
 
 	// Update is called once per frame
@@ -62,12 +67,14 @@ public class MuffinController : MonoBehaviour {
         cam.transform.position = Vector3.Lerp(cam.transform.position, camDestination, cameraSnap);
 	}
 
-    void OnControllerColliderHit(ControllerColliderHit hit)
+    void doSwipe()
     {
-    }
-    void OnCollisionEnter(Collision info)
-    {
-        Debug.Log("OnCollisionEnter with " + info.gameObject.name);
+        // find out everything within swipeSphere.  Its collider isn't used,
+        // just helps for visualization.
+        Debug.Log("Swiping at " + swipeSphere.position + " by " + swipeSphere.localScale.x);
+        Collider[] objs = Physics.OverlapSphere(swipeSphere.position, swipeSphere.localScale.x);
+        foreach (Collider obj in objs)
+            obj.SendMessage("Swiped", swipeSphere, SendMessageOptions.DontRequireReceiver);
     }
 
     bool IsGrounded()
