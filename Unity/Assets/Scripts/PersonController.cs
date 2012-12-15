@@ -3,12 +3,14 @@ using System.Collections;
 
 public class PersonController : MonoBehaviour {
 
-    private float swipedAmount = 5;
     private float moveSpeed = 1;
     private float zScale = .25f;
     private float bounceSpeed = 1f;
     private int moveFor = 2;
     private int moveSleep = 1;
+
+    private float swipedAmount = 5;
+    private float spinAmount = 5;
 
     private bool doMovement = true;
     private Vector3 movement = Vector3.zero;
@@ -20,6 +22,7 @@ public class PersonController : MonoBehaviour {
 	void Start ()
     {
         rb = GetComponent<Rigidbody>();
+        startMovingAgain = (Random.value -.5f) * moveSleep;
 	}
 
     void FixedUpdate()
@@ -50,8 +53,8 @@ public class PersonController : MonoBehaviour {
 
             movement = new Vector3(x, y, z);
             transform.rotation = Quaternion.LookRotation(movement);
-            stopMoving = Time.time + moveFor;
-            startMovingAgain = Time.time + moveFor + moveSleep;
+            stopMoving = Time.time + moveFor + (Random.value - .5f) * moveFor;
+            startMovingAgain = stopMoving + moveSleep + (Random.value - .5f) * moveSleep;
         }
         if (movement != Vector3.zero)
         {
@@ -71,21 +74,48 @@ public class PersonController : MonoBehaviour {
     public void Swiped(GameObject killer)
     {
         Debug.Log("Person got swiped!");
+        GotHit(killer, swipedAmount, swipedAmount);
+    }
+
+    public void Pounced(GameObject killer)
+    {
+        Debug.Log("Person " + name + " got pounced!");
+        GotHit(killer, 0, swipedAmount);
+    }
+
+    private void GotHit(GameObject killer, float horizontal, float vertical)
+    {
         // we're no longer moving under our own power
         doMovement = false;
         // remove the rotational constraints, they're flyin!
         rb.constraints = RigidbodyConstraints.None;
+        float x = 0, y = 0;
 
-        // We want to fly right at least as fast as muffin.
-        // Set our x to muffin's as a baseline if we're less than it.
-        float killerX = killer.rigidbody.velocity.x;
-        if(killerX > 0 && killerX > rb.velocity.x)
-            rb.velocity = new Vector3(killerX, rb.velocity.y, rb.velocity.z);
+        if (horizontal != 0)
+        {
+            // We want to fly right at least as fast as muffin.
+            // Set our x to muffin's as a baseline if we're less than it.
+            float killerX = killer.rigidbody.velocity.x;
+            if (killerX > 0 && killerX > rb.velocity.x)
+                x = killerX - rb.velocity.x;
+            // launch us away, kinda randomly.  
+            x += swipedAmount / 2 + Random.value * horizontal;
+        }
 
-        // launch us away, kinda randomly.  
-        float x = swipedAmount / 2 + Random.value * swipedAmount;
-        rb.velocity += new Vector3(x, swipedAmount / 2 + Random.value * swipedAmount, 0);
+        if (vertical != 0)
+        {
+            /* we definitely want to be moving up by amount, but if
+             * we're already going up, increase our speed by that much */
+            if (rb.velocity.y < 0)
+                y = -rb.velocity.y;
+            y += swipedAmount / 2 + Random.value * vertical;
+        }
+        rb.velocity += new Vector3(x, y, rb.velocity.z);
 
+        // give them a little random spin too
+        rb.angularVelocity = new Vector3((Random.value - .5f) * spinAmount,
+            (Random.value - .5f) * spinAmount,
+            (Random.value - .5f) * spinAmount);
     }
 
     bool IsGrounded()
@@ -93,4 +123,3 @@ public class PersonController : MonoBehaviour {
         return Physics.Raycast(rb.position, -Vector3.up, distToGround + .1f);
     }
 }
-

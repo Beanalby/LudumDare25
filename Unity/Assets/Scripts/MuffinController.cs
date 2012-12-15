@@ -7,16 +7,24 @@ public class MuffinController : MonoBehaviour {
 
     private float jumpSpeed = 12;
     private float moveSpeed = 10;
+    private float pounceThreshold = .66f;
+    private float pounceSpeed = 20f;
+    private float pounceEffectRadius = 6f;
+    private float pounceEffectHeight = 2f;
+    private float swipeCooldown = 1f;
+
     private Vector3 camOffset = new Vector3(6, 5, -9);
     private float cameraSnap = .2f;
     private float distToGround = 3f;
 
+    private bool doJump;
+    private bool isPouncing = false;
+    private Vector3 velocity = Vector3.zero;
+    private float lastSwipe = -500;
+
     private Rigidbody rb;
     private Camera cam;
     private Transform swipeSphere;
-
-    private bool doJump;
-    private Vector3 velocity = Vector3.zero;
 
 	void Start ()
     {
@@ -27,14 +35,10 @@ public class MuffinController : MonoBehaviour {
 
     void Update()
     {
-        if (Input.GetButtonDown("Jump") && IsGrounded())
-        {
-            Debug.Log("Setting doJump");
-            doJump = true;
-        }
-
+        if (Input.GetButtonDown("Jump"))
+            tryJumpOrPounce();
         if (Input.GetButtonDown("Fire1"))
-            doSwipe();
+            trySwipe();
     }
 
 	// Update is called once per frame
@@ -58,6 +62,11 @@ public class MuffinController : MonoBehaviour {
         {
             newPos.y = distToGround;
             velocity.y = 0;
+            if (isPouncing)
+            {
+                pounceLand();
+                isPouncing = false;
+            }
         }
 
         rb.MovePosition(newPos);
@@ -67,14 +76,55 @@ public class MuffinController : MonoBehaviour {
         cam.transform.position = Vector3.Lerp(cam.transform.position, camDestination, cameraSnap);
 	}
 
-    void doSwipe()
+    void tryJumpOrPounce()
     {
-        // find out everything within swipeSphere.  Its collider isn't used,
-        // just helps for visualization.
+        if (IsGrounded())
+        {
+            Debug.Log("Setting doJump");
+            doJump = true;
+        }
+        else
+        {
+            if (!isPouncing && rb.velocity.y < jumpSpeed * pounceThreshold)
+            {
+                Debug.Log("Pouncing!");
+                isPouncing = true;
+                // we want to travel downward at AT LEAST -pounceSpeed.
+                // If we're already falling, increase by by that much.
+                if(velocity.y > 0)
+                    velocity.y = 0;
+                velocity.y -= pounceSpeed;
+            }
+            else
+            {
+                Debug.Log("y too high (" + rb.velocity.y + ")");
+            }
+        }
+    }
+    void trySwipe()
+    {
+        if (Time.time < lastSwipe + swipeCooldown)
+            return;
+        // find out everything within swipeSphere.
         Debug.Log("Swiping at " + swipeSphere.position + " by " + swipeSphere.localScale.x / 2f);
         Collider[] objs = Physics.OverlapSphere(swipeSphere.position, swipeSphere.localScale.x / 2f);
         foreach (Collider obj in objs)
             obj.SendMessage("Swiped", gameObject, SendMessageOptions.DontRequireReceiver);
+    }
+
+    void pounceLand()
+    {
+        /* find everything within the sphere of pounceEffect,
+         * but limit the height to give us the "cylinder" effect */
+        Vector3 pouncePos = transform.position;
+        pouncePos.y = 0;
+        Debug.Log("Pounce exploding from " + pouncePos);
+        Collider[] objs = Physics.OverlapSphere(pouncePos, pounceEffectRadius);
+        foreach (Collider obj in objs)
+        {
+            if (obj.transform.position.y < pounceEffectHeight)
+                obj.SendMessage("Pounced", gameObject, SendMessageOptions.DontRequireReceiver);
+        }
     }
 
     bool IsGrounded()
