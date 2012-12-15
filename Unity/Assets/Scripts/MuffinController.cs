@@ -7,7 +7,7 @@ public class MuffinController : MonoBehaviour {
 
     private float jumpSpeed = 12;
     private float moveSpeed = 10;
-    private Vector3 camOffset = new Vector3(6, 8, -12);
+    private Vector3 camOffset = new Vector3(6, 5, -9);
     private float cameraSnap = .2f;
     private float distToGround = 3f;
 
@@ -71,10 +71,10 @@ public class MuffinController : MonoBehaviour {
     {
         // find out everything within swipeSphere.  Its collider isn't used,
         // just helps for visualization.
-        Debug.Log("Swiping at " + swipeSphere.position + " by " + swipeSphere.localScale.x);
-        Collider[] objs = Physics.OverlapSphere(swipeSphere.position, swipeSphere.localScale.x);
+        Debug.Log("Swiping at " + swipeSphere.position + " by " + swipeSphere.localScale.x / 2f);
+        Collider[] objs = Physics.OverlapSphere(swipeSphere.position, swipeSphere.localScale.x / 2f);
         foreach (Collider obj in objs)
-            obj.SendMessage("Swiped", swipeSphere, SendMessageOptions.DontRequireReceiver);
+            obj.SendMessage("Swiped", gameObject, SendMessageOptions.DontRequireReceiver);
     }
 
     bool IsGrounded()
