@@ -4,6 +4,7 @@ ModelImporter:
   fileIDToRecycleName:
     4300000: PounceEffectFlat
     4300002: PounceEffectAngled
+    4300004: PounceEffectVertical
     7400000: Default Take //// PounceEffects
   serializedVersion: 10
   materials:
@@ -75,3 +76,16 @@ ModelImporter:
       data:
         first: 33
         second: a25a3200
+    PounceEffectVertical:
+      data:
+        first: 1
+        second: a6860100
+      data:
+        first: 4
+        second: 861a0600
+      data:
+        first: 23
+        second: 64182300
+      data:
+        first: 33
+        second: a45a3200

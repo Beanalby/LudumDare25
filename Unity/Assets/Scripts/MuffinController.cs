@@ -74,24 +74,18 @@ public class MuffinController : MonoBehaviour {
     {
         if (IsGrounded())
         {
-            Debug.Log("Setting doJump");
             doJump = true;
         }
         else
         {
             if (!isPouncing && rb.velocity.y < jumpSpeed * pounceThreshold)
             {
-                Debug.Log("Pouncing!");
                 isPouncing = true;
                 // we want to travel downward at AT LEAST -pounceSpeed.
                 // If we're already falling, increase by by that much.
                 if(velocity.y > 0)
                     velocity.y = 0;
                 velocity.y -= pounceSpeed;
-            }
-            else
-            {
-                Debug.Log("y too high (" + rb.velocity.y + ")");
             }
         }
     }
@@ -115,7 +109,6 @@ public class MuffinController : MonoBehaviour {
          * but limit the height to give us the "cylinder" effect */
         Vector3 pouncePos = transform.position;
         pouncePos.y = 0;
-        Debug.Log("Pounce exploding from " + pouncePos);
         Collider[] objs = Physics.OverlapSphere(pouncePos, pounceEffectRadius);
         foreach (Collider obj in objs)
         {

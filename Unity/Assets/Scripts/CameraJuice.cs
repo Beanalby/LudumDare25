@@ -46,7 +46,6 @@ public class CameraJuice : MonoBehaviour {
                 // make the camera dip by a full sin wave
                 float percent = (dur / swipeDuration);
                 float offset = swipeDist * makeWave(percent);
-                Debug.Log("Swipe adjusting camera " + percent + "% by " + offset);
                 newPos.y += offset;
             }
         }
@@ -62,7 +61,6 @@ public class CameraJuice : MonoBehaviour {
                 // make the camera dip by a full sin wave
                 float percent = (dur / pounceDuration);
                 float offset = pounceDist * makeWave(percent);
-                Debug.Log("Pounce adjusting camera " + percent + "% by " + offset);
                 newPos.y += offset;
             }
         }
