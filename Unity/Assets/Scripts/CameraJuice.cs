@@ -4,9 +4,9 @@ using System.Collections;
 public class CameraJuice : MonoBehaviour {
 
     public bool doJuice = true;
+    public Vector3 camOffset = new Vector3(6, 5, -9);
 
     private Camera cam;
-    private Vector3 camOffset = new Vector3(6, 5, -9);
     private Vector3 camBase;
 
     private float cameraSnap = .2f;

@@ -5,7 +5,6 @@ public class MuffinAnimation : MonoBehaviour {
 
     private Animation anim;
 
-	// Use this for initialization
 	void Start () {
         anim = transform.FindChild("MuffinModel").gameObject.animation;
         anim.wrapMode = WrapMode.Loop;
@@ -17,7 +16,8 @@ public class MuffinAnimation : MonoBehaviour {
 
         anim["Swipe"].layer = 3;
         anim["Swipe"].wrapMode = WrapMode.Once;
-        // swipe layer
+
+        anim.Play("Idle");
 	}
 	
 	// Update is called once per frame
