@@ -51,6 +51,7 @@ public class MuffinAnimation : MonoBehaviour {
     }
     public void DidSwipe()
     {
-        anim.CrossFade("Swipe");
+        anim["Swipe"].time = 0;
+        anim.Play("Swipe");
     }
 }
