@@ -12,9 +12,9 @@ ModelImporter:
     7400010: Swipe //// Muffin
   serializedVersion: 10
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
-    materialSearch: 1
+    materialSearch: 2
   animations:
     generateAnimations: 3
     bakeSimulation: 0
