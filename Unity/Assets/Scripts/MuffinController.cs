@@ -13,8 +13,6 @@ public class MuffinController : MonoBehaviour {
     private float pounceEffectHeight = 2f;
     private float swipeCooldown = 1f;
 
-    private Vector3 camOffset = new Vector3(6, 5, -9);
-    private float cameraSnap = .2f;
     private float distToGround = 3f;
 
     private bool doJump;
@@ -23,13 +21,11 @@ public class MuffinController : MonoBehaviour {
     private float lastSwipe = -500;
 
     private Rigidbody rb;
-    private Camera cam;
     private Transform swipeSphere;
 
 	void Start ()
     {
         rb = GetComponent<Rigidbody>();
-        cam = Camera.mainCamera;
         swipeSphere = transform.FindChild("SwipeSphere");
 	}
 
@@ -72,9 +68,6 @@ public class MuffinController : MonoBehaviour {
         }
         rb.MovePosition(newPos);
 
-        // have the camera follow muffin horizontally
-        Vector3 camDestination = camOffset + new Vector3(rb.position.x, 0, 0);
-        cam.transform.position = Vector3.Lerp(cam.transform.position, camDestination, cameraSnap);
 	}
 
     void tryJumpOrPounce()
