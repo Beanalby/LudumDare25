@@ -6,7 +6,7 @@ public class MuffinController : MonoBehaviour {
     private Vector3 gravity = Physics.gravity * 2;
 
     private float jumpSpeed = 12;
-    private float moveSpeed = 10;
+    private float moveSpeed = 5;
     private float pounceThreshold = .66f;
     private float pounceSpeed = 20f;
     private float pounceEffectRadius = 6f;
@@ -49,6 +49,7 @@ public class MuffinController : MonoBehaviour {
         velocity.x = moveSpeed * Input.GetAxis("Horizontal");
         if (doJump)
         {
+            SendMessage("DidJump");
             velocity.y = jumpSpeed;
             doJump = false;
         }
@@ -60,6 +61,7 @@ public class MuffinController : MonoBehaviour {
         // don't go down through the ground
         if (newPos.y - distToGround < 0)
         {
+            SendMessage("DidLand");
             newPos.y = distToGround;
             velocity.y = 0;
             if (isPouncing)
@@ -68,7 +70,6 @@ public class MuffinController : MonoBehaviour {
                 isPouncing = false;
             }
         }
-
         rb.MovePosition(newPos);
 
         // have the camera follow muffin horizontally

@@ -1,3 +1,7 @@
+*.blend1
+*.blend1.meta
+*.blend2
+*.blend2.meta
 Unity/*
 !Unity/Assets
 !Unity/ProjectSettings
