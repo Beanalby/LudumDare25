@@ -9,7 +9,7 @@ public class MuffinController : MonoBehaviour {
     private float moveSpeed = 5;
     private float pounceThreshold = .66f;
     private float pounceSpeed = 20f;
-    private float pounceEffectRadius = 6f;
+    private float pounceEffectRadius = 8f;
     private float pounceEffectHeight = 2f;
     private float swipeCooldown = 1f;
 
@@ -129,6 +129,7 @@ public class MuffinController : MonoBehaviour {
             if (obj.transform.position.y < pounceEffectHeight)
                 obj.SendMessageUpwards("Pounced", gameObject, SendMessageOptions.DontRequireReceiver);
         }
+        SendMessage("DidPounce");
     }
 
     bool IsGrounded()
