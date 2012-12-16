@@ -9,7 +9,7 @@ public class PersonController : MonoBehaviour {
     private int moveFor = 2;
     private int moveSleep = 1;
 
-    private float swipedAmount = 5;
+    private float swipedAmount = 2;
     private float spinAmount = 5;
 
     private bool doMovement = true;
@@ -73,21 +73,25 @@ public class PersonController : MonoBehaviour {
 
     public void Swiped(GameObject killer)
     {
-        Debug.Log("Person got swiped!");
-        GotHit(killer, swipedAmount, swipedAmount);
+        // we're no longer moving under our own power
+        doMovement = false;
+        PersonController.Fling(gameObject, killer,
+            swipedAmount, swipedAmount, spinAmount);
     }
 
     public void Pounced(GameObject killer)
     {
-        Debug.Log("Person " + name + " got pounced!");
-        GotHit(killer, 0, swipedAmount);
-    }
-
-    private void GotHit(GameObject killer, float horizontal, float vertical)
-    {
         // we're no longer moving under our own power
         doMovement = false;
-        // remove the rotational constraints, they're flyin!
+        PersonController.Fling(gameObject, killer,
+            0, swipedAmount, spinAmount);
+    }
+
+    static public void Fling(GameObject obj, GameObject killer,
+        float horizontal, float vertical, float spinAmount)
+    {
+        Rigidbody rb = obj.rigidbody;
+        // remove the rotational constraints (if any), they're flyin!
         rb.constraints = RigidbodyConstraints.None;
         float x = 0, y = 0;
 
@@ -99,7 +103,7 @@ public class PersonController : MonoBehaviour {
             if (killerX > 0 && killerX > rb.velocity.x)
                 x = killerX - rb.velocity.x;
             // launch us away, kinda randomly.  
-            x += swipedAmount / 2 + Random.value * horizontal;
+            x += horizontal / 2 + Random.value * horizontal;
         }
 
         if (vertical != 0)
@@ -108,7 +112,7 @@ public class PersonController : MonoBehaviour {
              * we're already going up, increase our speed by that much */
             if (rb.velocity.y < 0)
                 y = -rb.velocity.y;
-            y += swipedAmount / 2 + Random.value * vertical;
+            y += vertical / 2 + Random.value * vertical;
         }
         rb.velocity += new Vector3(x, y, rb.velocity.z);
 

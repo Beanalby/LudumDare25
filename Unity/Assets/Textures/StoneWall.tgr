@@ -1,0 +1,16 @@
+#NTEVersion 6
+#BeginNodes 3
+192 119
+engine.graphics.synthesis.texture.PatternBrick
+ExportName "" Transformation 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0 Color_Mapping 2 0.0 0.0 0.0 1.0 0.0 1.0 1.0 1.0 1.0 1.0 NumX 4 NumY 6 Shift 0.5 RandShift 0.1 GapX 0.01 GapY 0.01 Smooth 0.05 RandColor false endparameters
+191 367
+engine.graphics.synthesis.texture.FilterColorize
+ExportName "" Gray_to_Color_Mapping 2 0.4 0.4 0.4 1.0 0.0 0.8 0.8 0.8 1.0 1.0 endparameters
+335 89
+engine.graphics.synthesis.texture.PatternConstantColor
+ExportName "" Transformation 1.0 0.0 0.0 0.0 1.0 0.0 0.0 0.0 1.0 Color 0.0 0.0 0.0 endparameters
+#EndNodes
+#BeginConnections 1
+0 1 0
+#EndConnections
+glpreview 1 2 2 0 Object 1 Spec._Power 20.0 POM_Strength 0.25 Ambient 0.5 TexScale_U 1 TexScale_V 1 CamRotX 24.0 CamRotY 38.0 CamDist 3.1000013 endglpreview

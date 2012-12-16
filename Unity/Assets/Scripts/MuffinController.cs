@@ -106,10 +106,11 @@ public class MuffinController : MonoBehaviour {
         if (Time.time < lastSwipe + swipeCooldown)
             return;
         // find out everything within swipeSphere.
-        Debug.Log("Swiping at " + swipeSphere.position + " by " + swipeSphere.localScale.x / 2f);
         Collider[] objs = Physics.OverlapSphere(swipeSphere.position, swipeSphere.localScale.x / 2f);
         foreach (Collider obj in objs)
-            obj.SendMessage("Swiped", gameObject, SendMessageOptions.DontRequireReceiver);
+        {
+            obj.SendMessageUpwards("Swiped", gameObject, SendMessageOptions.DontRequireReceiver);
+        }
     }
 
     void pounceLand()
@@ -123,7 +124,7 @@ public class MuffinController : MonoBehaviour {
         foreach (Collider obj in objs)
         {
             if (obj.transform.position.y < pounceEffectHeight)
-                obj.SendMessage("Pounced", gameObject, SendMessageOptions.DontRequireReceiver);
+                obj.SendMessageUpwards("Pounced", gameObject, SendMessageOptions.DontRequireReceiver);
         }
     }
 
