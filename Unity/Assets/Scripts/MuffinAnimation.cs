@@ -24,19 +24,16 @@ public class MuffinAnimation : MonoBehaviour {
 	void Update () {
         if (rigidbody.velocity.x > 0)
         {
-            Debug.Log("CrossFade Walk");
             anim["Walk"].speed = 1;
             anim.CrossFade("Walk");
         }
         else if (rigidbody.velocity.x < 0)
         {
-            Debug.Log("Crossfade WalkBackwards");
             anim["Walk"].speed = -1;
             anim.CrossFade("Walk");
         }
         else
         {
-            Debug.Log("CrossFade Idle");
             anim.CrossFade("Idle");
         }
 	}

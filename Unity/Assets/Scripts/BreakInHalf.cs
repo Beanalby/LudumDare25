@@ -7,6 +7,7 @@ public class BreakInHalf : MonoBehaviour {
     public GameObject top;
     public GameObject full;
 
+    private float destroyTopAfter = 3;
     private float breakSpeed = 10;
     private float breakSpin = 10;
     Collider fullCollider;
@@ -42,7 +43,9 @@ public class BreakInHalf : MonoBehaviour {
         // oooo bad dependency!  don't care!
         PersonController.Fling(newTop, killer,
             horizontal, breakSpeed, breakSpin);
-        //Debug.Break();
+        
+        // Destroy the top after it's flung around for a while
+        Destroy(newTop, destroyTopAfter);
     }
 }
 
