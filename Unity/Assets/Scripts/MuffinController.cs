@@ -112,6 +112,7 @@ public class MuffinController : MonoBehaviour {
         {
             obj.SendMessageUpwards("Swiped", gameObject, SendMessageOptions.DontRequireReceiver);
         }
+        SendMessage("DidSwipe");
     }
 
     void pounceLand()

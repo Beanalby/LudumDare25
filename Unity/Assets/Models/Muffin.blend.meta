@@ -9,6 +9,7 @@ ModelImporter:
     7400004: Walk //// Muffin
     7400006: Jumping //// Muffin
     7400008: JumpLand //// Muffin
+    7400010: Swipe //// Muffin
   serializedVersion: 10
   materials:
     importMaterials: 0

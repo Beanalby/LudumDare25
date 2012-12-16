@@ -15,6 +15,8 @@ public class MuffinAnimation : MonoBehaviour {
         anim["JumpLand"].layer = 5;
         anim["JumpLand"].wrapMode = WrapMode.Once;
 
+        anim["Swipe"].layer = 3;
+        anim["Swipe"].wrapMode = WrapMode.Once;
         // swipe layer
 	}
 	
@@ -41,11 +43,14 @@ public class MuffinAnimation : MonoBehaviour {
 
     public void DidJump()
     {
-        anim["Jumping"].time = 0;
-        anim.CrossFade("Jumping");
+        anim.Play("Jumping");
     }
     public void DidLand()
     {
-        anim.CrossFade("JumpLand");
+        anim.Play("JumpLand");
+    }
+    public void DidSwipe()
+    {
+        anim.CrossFade("Swipe");
     }
 }
