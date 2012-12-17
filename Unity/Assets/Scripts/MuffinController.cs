@@ -16,6 +16,7 @@ public class MuffinController : MonoBehaviour {
     private float swipeCooldown = 1f;
     public string welcomeMessage = "";
     private float welcomeMessageDuration = 3f;
+    public AudioClip NewMusic;
 
     private float distToGround = 3f;
 
@@ -76,7 +77,16 @@ public class MuffinController : MonoBehaviour {
         if (newPos.y - distToGround < 0)
         {
             SendMessage("DidLand");
-            canControl = true;
+            if (!canControl)
+            {
+                canControl = true;
+                if (NewMusic)
+                {
+                    AudioSource source = Camera.main.GetComponent<AudioSource>();
+                    source.clip = NewMusic;
+                    source.Play();
+                }
+            }
             newPos.y = distToGround;
             velocity.y = 0;
             if (isPouncing)
