@@ -5,11 +5,11 @@ public class PersonController : MonoBehaviour {
 
     private float moveSpeed = 1;
     private float zScale = .25f;
-    private float bounceSpeed = 1f;
+    private float bounceSpeed = 1.5f;
     private int moveFor = 2;
     private int moveSleep = 1;
 
-    private float swipedAmount = 2;
+    private float swipedAmount = 4;
     private float spinAmount = 5;
 
     private bool doMovement = true;
