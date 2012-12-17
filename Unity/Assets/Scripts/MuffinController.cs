@@ -19,6 +19,7 @@ public class MuffinController : MonoBehaviour {
 
     private float distToGround = 3f;
 
+    private float playerStart;
     private bool doJump;
     private bool isPouncing = false;
     private Vector3 velocity = Vector3.zero;
@@ -29,6 +30,7 @@ public class MuffinController : MonoBehaviour {
 
 	void Start ()
     {
+        playerStart = Time.time;
         rb = GetComponent<Rigidbody>();
         swipeSphere = transform.FindChild("SwipeSphere");
         // if we can't control at start, we're pouncing
@@ -74,7 +76,6 @@ public class MuffinController : MonoBehaviour {
         if (newPos.y - distToGround < 0)
         {
             SendMessage("DidLand");
-            Debug.Log("Setting canControl");
             canControl = true;
             newPos.y = distToGround;
             velocity.y = 0;
@@ -143,7 +144,7 @@ public class MuffinController : MonoBehaviour {
 
     public void OnGUI()
     {
-        if (Time.time < welcomeMessageDuration && welcomeMessage != "")
+         if (playerStart + welcomeMessageDuration > Time.time && welcomeMessage != "")
         {
             GUI.Box(new Rect(10, 10, Screen.width - 10, 75), welcomeMessage);
         }
