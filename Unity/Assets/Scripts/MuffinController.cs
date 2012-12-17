@@ -3,6 +3,7 @@ using System.Collections;
 
 public class MuffinController : MonoBehaviour {
 
+    public bool noControlOnStart = false;
     public bool canControl = true;
 
     private Vector3 gravity = Physics.gravity * 2;
@@ -35,8 +36,9 @@ public class MuffinController : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         swipeSphere = transform.FindChild("SwipeSphere");
         // if we can't control at start, we're pouncing
-        if (!canControl)
+        if (noControlOnStart)
         {
+            canControl = false;
             isPouncing = true;
         }
 	}
@@ -77,8 +79,9 @@ public class MuffinController : MonoBehaviour {
         if (newPos.y - distToGround < 0)
         {
             SendMessage("DidLand");
-            if (!canControl)
+            if (noControlOnStart)
             {
+                noControlOnStart = false;
                 canControl = true;
                 if (NewMusic)
                 {
