@@ -3,6 +3,8 @@ using System.Collections;
 
 public class MuffinController : MonoBehaviour {
 
+    public bool canControl = true;
+
     private Vector3 gravity = Physics.gravity * 2;
 
     private float jumpSpeed = 12;
@@ -12,6 +14,8 @@ public class MuffinController : MonoBehaviour {
     private float pounceEffectRadius = 8f;
     private float pounceEffectHeight = 2f;
     private float swipeCooldown = 1f;
+    public string welcomeMessage = "";
+    private float welcomeMessageDuration = 3f;
 
     private float distToGround = 3f;
 
@@ -27,10 +31,17 @@ public class MuffinController : MonoBehaviour {
     {
         rb = GetComponent<Rigidbody>();
         swipeSphere = transform.FindChild("SwipeSphere");
+        // if we can't control at start, we're pouncing
+        if (!canControl)
+        {
+            isPouncing = true;
+        }
 	}
 
     void Update()
     {
+        if (!canControl)
+            return;
         if (Input.GetButtonDown("Jump"))
             tryJumpOrPounce();
         if (Input.GetButtonDown("Fire1"))
@@ -41,15 +52,20 @@ public class MuffinController : MonoBehaviour {
 	void FixedUpdate ()
     {
         // figure out where our new position will be
-        Vector3 newPos;
-        velocity.x = moveSpeed * Input.GetAxis("Horizontal");
-        if (doJump)
+        Vector3 newPos = rb.position;
+        velocity.x = 0;
+        if (canControl)
         {
-            SendMessage("DidJump");
-            velocity.y = jumpSpeed;
-            doJump = false;
+            if(newPos.x > 0 || Input.GetAxis("Horizontal") > 0)
+                velocity.x = moveSpeed * Input.GetAxis("Horizontal");
+            if (doJump)
+            {
+                SendMessage("DidJump");
+                velocity.y = jumpSpeed;
+                doJump = false;
+            }
         }
-        newPos = rb.position + (velocity * Time.deltaTime);
+        newPos += (velocity * Time.deltaTime);
 
         // increase downward velocity by gravity
         if (!IsGrounded())
@@ -58,6 +74,8 @@ public class MuffinController : MonoBehaviour {
         if (newPos.y - distToGround < 0)
         {
             SendMessage("DidLand");
+            Debug.Log("Setting canControl");
+            canControl = true;
             newPos.y = distToGround;
             velocity.y = 0;
             if (isPouncing)
@@ -121,5 +139,13 @@ public class MuffinController : MonoBehaviour {
     bool IsGrounded()
     {
         return Physics.Raycast(rb.position, -Vector3.up, distToGround + .1f);
+    }
+
+    public void OnGUI()
+    {
+        if (Time.time < welcomeMessageDuration && welcomeMessage != "")
+        {
+            GUI.Box(new Rect(10, 10, Screen.width - 10, 75), welcomeMessage);
+        }
     }
 }

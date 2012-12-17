@@ -40,7 +40,7 @@ public class TutorialDriver : MonoBehaviour {
     {
         if (complete != -1 && complete + loadDelay < Time.time)
         {
-            Debug.Log("Loading main game");
+            Application.LoadLevel("level1");
         }
     }
 
@@ -63,7 +63,6 @@ public class TutorialDriver : MonoBehaviour {
             case 4:
                 sc3.Hide();
                 complete = Time.time;
-                // finish tutorial
                 break;
         }
     }
