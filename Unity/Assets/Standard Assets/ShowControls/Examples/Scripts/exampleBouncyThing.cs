@@ -13,6 +13,6 @@ public class exampleBouncyThing : MonoBehaviour {
     }
     void OnCollisionEnter(Collision col)
     {
-        rigidbody.velocity = col.contacts[0].normal * 5;
+        GetComponent<Rigidbody>().velocity = col.contacts[0].normal * 5;
     }
 }

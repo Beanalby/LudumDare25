@@ -6,7 +6,7 @@ public class MuffinAnimation : MonoBehaviour {
     private Animation anim;
 
 	void Start () {
-        anim = transform.FindChild("MuffinModel").gameObject.animation;
+        anim = transform.Find("MuffinModel").gameObject.GetComponent<Animation>();
         anim.wrapMode = WrapMode.Loop;
         anim["Jumping"].layer = 5;
         anim["Jumping"].wrapMode = WrapMode.ClampForever;
@@ -22,12 +22,12 @@ public class MuffinAnimation : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (rigidbody.velocity.x > 0)
+        if (GetComponent<Rigidbody>().velocity.x > 0)
         {
             anim["Walk"].speed = 1;
             anim.CrossFade("Walk");
         }
-        else if (rigidbody.velocity.x < 0)
+        else if (GetComponent<Rigidbody>().velocity.x < 0)
         {
             anim["Walk"].speed = -1;
             anim.CrossFade("Walk");

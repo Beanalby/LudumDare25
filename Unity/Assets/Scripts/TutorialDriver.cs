@@ -32,7 +32,6 @@ public class TutorialDriver : MonoBehaviour {
         scStart.showDuration = -1;
         sc2.showDuration = -1;
         sc3.showDuration = -1;
-
         scStart.Show();
 	}
 

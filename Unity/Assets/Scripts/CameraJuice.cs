@@ -20,7 +20,7 @@ public class CameraJuice : MonoBehaviour {
     private float pounceDist = .5f;
 
 	void Start() {
-        cam = Camera.mainCamera;
+        cam = Camera.main;
         camBase = cam.transform.position;
         swipeStart = -1;
         pounceStart = -1;
@@ -29,7 +29,7 @@ public class CameraJuice : MonoBehaviour {
     void FixedUpdate()
     {
         // have the camera follow muffin horizontally
-        Vector3 camDestination = camOffset + new Vector3(rigidbody.position.x, 0, 0);
+        Vector3 camDestination = camOffset + new Vector3(GetComponent<Rigidbody>().position.x, 0, 0);
         camBase = Vector3.Lerp(camBase, camDestination, cameraSnap);
 
         Vector3 newPos = camBase;

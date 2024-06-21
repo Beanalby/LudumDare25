@@ -34,7 +34,7 @@ public class MuffinController : MonoBehaviour {
     {
         playerStart = Time.time;
         rb = GetComponent<Rigidbody>();
-        swipeSphere = transform.FindChild("SwipeSphere");
+        swipeSphere = transform.Find("SwipeSphere");
         // if we can't control at start, we're pouncing
         if (noControlOnStart)
         {

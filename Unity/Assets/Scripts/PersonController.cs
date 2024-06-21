@@ -90,7 +90,7 @@ public class PersonController : MonoBehaviour {
     static public void Fling(GameObject obj, GameObject killer,
         float horizontal, float vertical, float spinAmount)
     {
-        Rigidbody rb = obj.rigidbody;
+        Rigidbody rb = obj.GetComponent<Rigidbody>();
         // remove the rotational constraints (if any), they're flyin!
         rb.constraints = RigidbodyConstraints.None;
         float x = 0, y = 0;
@@ -99,7 +99,7 @@ public class PersonController : MonoBehaviour {
         {
             // We want to fly right at least as fast as muffin.
             // Set our x to muffin's as a baseline if we're less than it.
-            float killerX = killer.rigidbody.velocity.x;
+            float killerX = killer.GetComponent<Rigidbody>().velocity.x;
             if (killerX > 0 && killerX > rb.velocity.x)
                 x = killerX - rb.velocity.x;
             // launch us away, kinda randomly.  
